@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>About Us - Kawalthe Stay</title>
+    
+    <link rel='stylesheet' href='https://www.hachikotourism.in/wp-content/themes/dt-the7/fonts/icomoon-the7-font/icomoon-the7-font.min.css?ver=12.4.1' media='all' />
+    <link rel='stylesheet' href='https://www.hachikotourism.in/wp-content/themes/dt-the7/fonts/FontAwesome/css/all.min.css?ver=12.4.1' media='all' />
+    <link rel='stylesheet' href='https://www.hachikotourism.in/wp-content/themes/dt-the7/css/main.min.css?ver=12.4.1' media='all' />
+    
+    <link href="//fonts.googleapis.com/css?family=Signika:700%7CRoboto:700%2C400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* RESET BODY MARGIN */
+        body { margin: 0; padding: 0; }
+
+        /* Page Header Banner */
+        .page-header {
+            /* REPLACE WITH YOUR IMAGE */
+            background-image: url('https://www.hachikotourism.in/wp-content/uploads/2020/03/parashar-agritourism-12.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 450px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            
+            /* --- FIXED: Removed Top Margin --- */
+            margin-top: 0px !important; 
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); /* Dark overlay */
+        }
+
+        .page-title {
+            position: relative;
+            color: white;
+            z-index: 2;
+            text-align: center;
+            padding-top: 60px; /* Push text down to clear navbar */
+        }
+
+        .page-title h1 {
+            font-family: 'Signika', sans-serif;
+            font-size: 60px;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        /* Text Sections */
+        .content-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .flex-box {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 80px;
+        }
+        
+        /* Highlight Text (Orange) */
+        .highlight-text {
+            color: #ff9200; /* Original Orange */
+            font-family: 'Roboto Slab', serif;
+            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .feature-item {
+            text-align: center;
+            padding: 30px;
+            background: #f9f9f9;
+            border-bottom: 3px solid #ff9200; /* Orange Border */
+            transition: transform 0.3s;
+        }
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 40px;
+            color: #ff9200; /* Orange Icon */
+            margin-bottom: 20px;
+        }
+
+        /* Mobile Layout */
+        @media screen and (max-width: 768px) {
+            .flex-box { flex-direction: column; }
+            .flex-box.reverse { flex-direction: column-reverse; }
+            .page-header { height: 300px; }
+            .page-title h1 { font-size: 36px; }
+            
+            /* Mobile Nav Fixes */
+            .navigation ul { flex-direction: column; background: #333; padding: 20px !important; }
+            .header-bar { padding: 10px 20px !important; }
+        }
+        
+        /* Button Style (Orange) */
+        .slider-btn {
+            background-color: #ff9200; /* Original Orange */
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .slider-btn:hover {
+            background-color: #e08000; /* Darker Orange on Hover */
+        }
+    </style>
+</head>
+
+<body class="home page-template-default page page-id-14">
+
+<div class="masthead split-header" role="banner" style="position: absolute; width: 100%; z-index: 999; background: transparent;">
+    <header class="header-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; max-width: 1200px; margin: 0 auto;">
+        
+        <a href="index.html" style="font-size: 24px; font-weight: bold; color: white; text-decoration: none; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">KAWALTHE</a>
+
+        <nav class="navigation">
+            <ul style="list-style:none; display:flex; gap:30px; margin:0; padding:0;">
+                <li><a href="index.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Home</a></li>
+                <li><a href="about.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">About</a></li>
+                <li><a href="explore.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Explore</a></li>
+                <li><a href="packages.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Packages</a></li>
+                <li><a href="activity.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Activity</a></li>
+                <li><a href="photos.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Photos</a></li>
+                <li><a href="contact.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Contact</a></li>
+            </ul>
+        </nav>
+
+    </header>
+</div>
+<div class="page-header">
+    <div class="page-title">
+        <h1>About Kawalthe Stay</h1>
+        <p style="font-size: 20px; font-family: 'Roboto Slab', serif;">Agro Tourism • Nature • Culture</p>
+    </div>
+</div>
+
+<div id="main" class="sidebar-none">
+    <div class="content-section">
+        
+        <div class="flex-box">
+            <div style="flex: 1;">
+                <span class="highlight-text">THE EXPERIENCE</span>
+                <h2 style="font-size: 40px; margin-top: 0;">What is Agro Tourism?</h2>
+                <p style="font-size: 18px; line-height: 1.8; color: #555;">
+                    Agro Tourism is more than just a vacation; it is a return to your roots. It is about waking up to the chirping of birds, breathing air that hasn't been touched by city pollution, and eating food that comes straight from the farm to your plate.
+                </p>
+                <p style="font-size: 18px; line-height: 1.8; color: #555;">
+                    At Kawalthe Stay, we bridge the gap between urban hustle and rural peace. We invite you to experience the authentic lifestyle of an Indian farmer, participating in farming activities or simply relaxing under the shade of ancient trees.
+                </p>
+            </div>
+            <div style="flex: 1;">
+                <img src="https://www.hachikotourism.in/wp-content/uploads/2020/09/DSCF1661-1-700x466.jpg" style="width:100%; border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            </div>
+        </div>
+
+        <div class="flex-box reverse">
+            <div style="flex: 1;">
+                <img src="https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20211127114203-2.jpg" style="width:100%; border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            </div>
+            <div style="flex: 1;">
+                <span class="highlight-text">OUR HOME</span>
+                <h2 style="font-size: 40px; margin-top: 0;">Welcome to Kawalthe</h2>
+                <p style="font-size: 18px; line-height: 1.8; color: #555;">
+                    Nestled in the lush greenery of the region, Kawalthe Stay is designed to be your second home. Our property reflects the traditional architecture of Maharashtra while providing modern amenities for a comfortable stay.
+                </p>
+                <p style="font-size: 18px; line-height: 1.8; color: #555;">
+                    We are located near historical forts and temples, making us the perfect base for your explorations. Whether you want to trek the nearby hills or sit by the campfire sharing stories, Kawalthe Stay offers the perfect atmosphere.
+                </p>
+                <br>
+                <a href="packages.html" class="slider-btn">Book Your Stay</a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 80px;">
+            <h2 style="font-size: 36px;">Why Choose Us?</h2>
+            <div style="width: 100px; height: 3px; background: #ff9200; margin: 20px auto;"></div>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-item">
+                
+                <h3>Organic Living</h3>
+                <p>Enjoy fresh, organic food cooked on traditional Chulha.</p>
+            </div>
+            <div class="feature-item">
+               
+                <h3>Rustic Stay</h3>
+                <p>Stay in cottages that blend with nature.</p>
+            </div>
+            <div class="feature-item">
+               
+                <h3>Farming Experience</h3>
+                <p>Get your hands dirty and learn how food is grown.</p>
+            </div>
+            <div class="feature-item">
+                
+                <h3>Campfire & Culture</h3>
+                <p>Evenings filled with folk stories and warmth.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer id="footer" style="background: #111; color: #777; padding: 40px 20px; text-align: center; border-top: 1px solid #222;">
+    <p>&copy; 2024 Kawalthe Stay - Agro Tourism. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

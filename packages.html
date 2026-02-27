@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Packages & Itinerary - Kawalthe Stay</title>
+    
+    <link href="//fonts.googleapis.com/css?family=Signika:700%7CRoboto:700%2C400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body { margin: 0; padding: 0; font-family: 'Signika', sans-serif; background-color: #f9f9f9; }
+
+        /* HEADER & BANNER */
+        .page-header {
+            background-image: url('https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20211127114203-2.jpg'); 
+            background-size: cover; background-position: center; height: 400px;
+            display: flex; align-items: center; justify-content: center; position: relative; margin-top: 0;
+        }
+        .page-header::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
+        }
+        .page-title { position: relative; z-index: 2; text-align: center; color: white; padding-top: 60px; }
+        .page-title h1 { font-size: 50px; margin: 0; }
+        .page-title p { font-size: 18px; margin-top: 10px; color: #ff9200; font-weight: 700; font-family: 'Roboto Slab', serif; }
+
+        /* SECTION TITLES */
+        .section-header { text-align: center; margin-bottom: 40px; margin-top: 60px; }
+        .section-header h2 { font-size: 36px; margin-bottom: 10px; color: #333; }
+        .section-header span { color: #ff9200; font-family: 'Roboto Slab', serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* 1. PACKAGES GRID */
+        .packages-section { padding: 0 20px 60px; }
+        .packages-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .package-card {
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.3s;
+            display: flex; flex-direction: column; border: 1px solid #eee;
+        }
+        .package-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .card-image { height: 240px; overflow: hidden; position: relative; }
+        .card-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .package-card:hover .card-image img { transform: scale(1.1); }
+        .price-tag {
+            position: absolute; top: 20px; right: 0;
+            background: #ff9200; color: white; padding: 8px 15px;
+            font-weight: 700; font-size: 16px; border-radius: 4px 0 0 4px;
+        }
+        .card-content { padding: 25px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 24px; color: #333; margin: 0 0 10px; }
+        .features-list { list-style: none; padding: 0; margin: 0 0 25px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; }
+        .features-list li { margin-bottom: 8px; color: #555; font-size: 14px; display: flex; align-items: center; }
+        .features-list li i { color: #388E3C; margin-right: 10px; }
+        .book-btn {
+            margin-top: auto; background: #333; color: white; border: none;
+            padding: 12px; width: 100%; font-weight: 700; text-transform: uppercase;
+            cursor: pointer; transition: 0.3s; border-radius: 5px;
+        }
+        .book-btn:hover { background: #ff9200; }
+
+        /* 2. DAY TRIP TIMELINE (SAGUNA BAUG STYLE) */
+        .timeline-container {
+            max-width: 800px; margin: 0 auto 60px; padding: 0 20px;
+        }
+        .timeline-item {
+            display: flex; gap: 20px; margin-bottom: 30px; position: relative;
+        }
+        .timeline-time {
+            min-width: 100px; font-weight: bold; color: #ff9200; text-align: right; font-family: 'Roboto Slab', serif;
+        }
+        .timeline-content {
+            border-left: 2px solid #ddd; padding-left: 30px; position: relative; padding-bottom: 10px;
+        }
+        .timeline-content::before {
+            content: ''; position: absolute; left: -6px; top: 5px; width: 10px; height: 10px;
+            background: #388E3C; border-radius: 50%;
+        }
+        .timeline-content h4 { margin: 0 0 5px; font-size: 18px; color: #333; }
+        .timeline-content p { margin: 0; color: #666; font-size: 14px; }
+
+        /* 3. MENU SECTION */
+        .menu-section {
+            background: white; padding: 60px 20px; border-top: 1px solid #eee; border-bottom: 1px solid #eee;
+        }
+        .menu-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px; max-width: 1000px; margin: 0 auto;
+        }
+        .menu-card h3 { color: #388E3C; border-bottom: 2px solid #ff9200; display: inline-block; margin-bottom: 20px; }
+        .menu-item { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dotted #ccc; padding-bottom: 5px; }
+        .menu-item strong { color: #444; }
+        .menu-item span { color: #888; font-size: 14px; font-style: italic; }
+
+        /* 4. COMPARISON TABLE */
+        .table-container {
+            max-width: 900px; margin: 0 auto 80px; padding: 0 20px; overflow-x: auto;
+        }
+        .compare-table {
+            width: 100%; border-collapse: collapse; background: white; box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        .compare-table th, .compare-table td {
+            padding: 15px; text-align: center; border-bottom: 1px solid #eee;
+        }
+        .compare-table th { background: #333; color: white; text-transform: uppercase; font-size: 14px; }
+        .compare-table tr:hover { background: #fffbf5; }
+        .feature-col { text-align: left !important; font-weight: bold; color: #555; }
+        .check { color: #388E3C; font-weight: bold; }
+        .cross { color: #ccc; }
+
+        /* 5. BOOKING MODAL (AIRBNB STYLE) */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 2000;
+            align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
+        .booking-widget {
+            background: white; width: 90%; max-width: 450px;
+            border-radius: 15px; padding: 30px; position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2); animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #aaa; }
+        .date-picker-container { border: 1px solid #ccc; border-radius: 8px; margin: 20px 0; display: flex; overflow: hidden; }
+        .date-input { width: 50%; padding: 10px; border: none; outline: none; cursor: pointer; text-align: center; border-right: 1px solid #eee; }
+        .guest-selector { display: flex; justify-content: space-between; align-items: center; border: 1px solid #ccc; padding: 10px; border-radius: 8px; margin-bottom: 20px; }
+        .guest-btn { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #ccc; background: white; cursor: pointer; }
+        .confirm-btn { width: 100%; background: linear-gradient(to right, #ff9200, #ff5e00); color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+
+        /* FLOATING WHATSAPP BUTTON */
+        .whatsapp-float {
+            position: fixed; bottom: 30px; left: 30px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; text-align: center; font-size: 35px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10000; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        .menu-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px 1fr;
+    align-items: center;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.left-menu { text-align: right; }
+.right-menu { text-align: left; }
+
+.menu-image-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-image-center img {
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    transition: 0.4s ease;
+}
+
+.menu-item {
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.menu-item:hover strong {
+    color: #ff9200;
+}
+
+
+    </style>
+</head>
+
+<body>
+
+<div class="masthead split-header" role="banner" style="position: absolute; width: 100%; z-index: 999; background: transparent;">
+    <header class="header-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; max-width: 1200px; margin: 0 auto;">
+        <a href="index.html" style="font-size: 24px; font-weight: bold; color: white; text-decoration: none; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">KAWALTHE</a>
+        <nav class="navigation">
+            <ul style="list-style:none; display:flex; gap:30px; margin:0; padding:0;">
+                <li><a href="index.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Home</a></li>
+                <li><a href="about.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">About</a></li>
+                <li><a href="explore.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Explore</a></li>
+                <li><a href="packages.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Packages</a></li>
+                <li><a href="activity.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Activity</a></li>
+                <li><a href="photos.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Photos</a></li>
+                <li><a href="contact.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Packages & Itinerary</h1>
+        <p>Curated Experiences for Every Traveler</p>
+    </div>
+</div>
+
+<div class="section-header">
+    <span>Choose Your Stay</span>
+    <h2>Popular Packages</h2>
+</div>
+
+<div class="packages-section">
+    <div class="packages-grid">
+
+        <div class="package-card">
+            <div class="card-image">
+                <span class="price-tag">₹1,200</span>
+                <img src="https://www.hachikotourism.in/wp-content/uploads/2020/03/parashar-images-05-300x169.jpg" alt="Day Trip">
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">Day Excursion</h3>
+                <p>9:30 AM to 5:30 PM</p>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> Breakfast & Lunch</li>
+                    <li><i class="fas fa-check-circle"></i> Farm Tour</li>
+                    <li><i class="fas fa-check-circle"></i> Bullock Cart Ride</li>
+                </ul>
+                <button class="book-btn" onclick="openBooking('Day Excursion', 1200, false)">Book Day Trip</button>
+            </div>
+        </div>
+
+        <div class="package-card" style="border: 2px solid #ff9200; transform: scale(1.02);">
+            <div class="card-image">
+                <span class="price-tag" style="background:#388E3C;">₹2,500</span>
+                <img src="https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20211127114203-2.jpg" alt="Cottage Stay">
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">Rustic Cottage Stay</h3>
+                <p>1 Night / 2 Days (24 Hours)</p>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> All Meals Included</li>
+                    <li><i class="fas fa-check-circle"></i> Private Cottage</li>
+                    <li><i class="fas fa-check-circle"></i> Campfire & Music</li>
+                </ul>
+                <button class="book-btn" onclick="openBooking('Rustic Cottage Stay', 2500, true)" style="background:#ff9200;">Book Cottage</button>
+            </div>
+        </div>
+
+        <div class="package-card">
+            <div class="card-image">
+                <span class="price-tag">Custom</span>
+                <img src="https://www.hachikotourism.in/wp-content/uploads/2020/03/parashar-images-01-3.jpg" alt="Group">
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">School & Corporate</h3>
+                <p>For Groups of 20+</p>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> Team Building Games</li>
+                    <li><i class="fas fa-check-circle"></i> Educational Tour</li>
+                    <li><i class="fas fa-check-circle"></i> Conference Space</li>
+                </ul>
+                <a href="contact.html" class="book-btn" style="text-decoration:none; display:block;">Contact for Quote</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="section-header">
+    <span>Typical Schedule</span>
+    <h2>A Day at Kawalthe</h2>
+</div>
+
+<div class="timeline-container">
+    <div class="timeline-item">
+        <div class="timeline-time">09:30 AM</div>
+        <div class="timeline-content">
+            <h4>Arrival & Breakfast</h4>
+            <p>Welcome drink (Kokam Sarbat) followed by Misal Pav or Pohe and tea.</p>
+        </div>
+    </div>
+    <div class="timeline-item">
+        <div class="timeline-time">10:30 AM</div>
+        <div class="timeline-content">
+            <h4>Guided Farm Tour</h4>
+            <p>Walk through the fields, learn about crops, and visit the dairy farm.</p>
+        </div>
+    </div>
+    <div class="timeline-item">
+        <div class="timeline-time">01:30 PM</div>
+        <div class="timeline-content">
+            <h4>Village Lunch</h4>
+            <p>Authentic Maharashtrian vegetarian feast cooked on Chulha.</p>
+        </div>
+    </div>
+    <div class="timeline-item">
+        <div class="timeline-time">04:00 PM</div>
+        <div class="timeline-content">
+            <h4>Activities & Rides</h4>
+            <p>Bullock cart ride, Tractor ride, and Farming activities.</p>
+        </div>
+    </div>
+    <div class="timeline-item">
+        <div class="timeline-time">05:30 PM</div>
+        <div class="timeline-content">
+            <h4>High Tea & Departure</h4>
+            <p>Evening tea/coffee with biscuits before you head home.</p>
+        </div>
+    </div>
+</div>
+
+<div class="menu-section">
+    <div class="section-header" style="margin-top:0;">
+        <span>Taste of Soil</span>
+        <h2>The Village Menu</h2>
+    </div>
+   <div class="menu-layout">
+    
+    <!-- LEFT COLUMN -->
+    <div class="menu-card left-menu">
+        <h3>Lunch Special</h3>
+
+        <div class="menu-item" data-img="images/food/Zunka.png">
+            <strong>Zunka Bhakar</strong>
+            <span>Jowar/Bajra Roti</span>
+        </div>
+
+        <div class="menu-item" data-img="images/food/Thecha.png">
+            <strong>Thecha & Pithla</strong>
+            <span>Spicy Chutney</span>
+        </div>
+
+        <div class="menu-item" data-img="images/food/VaranBhat.png">
+            <strong>Varan Bhat</strong>
+            <span>Indrayani Rice & Dal</span>
+        </div>
+
+        <div class="menu-item" data-img="images/food/OrganicSabzi.png">
+            <strong>Organic Sabzi</strong>
+            <span>Farm Fresh Veggies</span>
+        </div>
+    </div>
+
+    <!-- CENTER IMAGE -->
+    <div class="menu-image-center">
+        <img id="menu-preview" src="images/food/Thecha.png" alt="Menu Preview">
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="menu-card right-menu">
+        <h3>Add-Ons (Extra Cost)</h3>
+
+        <div class="menu-item" data-img="images/food/GavranChicken.png">
+            <strong>Gavran Chicken</strong>
+            <span>Village Style Curry</span>
+        </div>
+
+        <div class="menu-item" data-img="images/food/Barbecue.png">
+            <strong>Barbecue</strong>
+            <span>Marinated Paneer/Chicken</span>
+        </div>
+
+        <div class="menu-item" data-img="images/food/HurdaParty.png">
+            <strong>Hurda Party</strong>
+            <span>(Seasonal: Winter Only)</span>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<div class="section-header">
+    <span>Compare Plans</span>
+    <h2>Choose Your Experience</h2>
+</div>
+
+<div class="table-container">
+    <table class="compare-table">
+        <thead>
+            <tr>
+                <th class="feature-col">Feature</th>
+                <th>Day Trip (₹1200)</th>
+                <th>Overnight Stay (₹2500)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="feature-col">Breakfast & Lunch</td>
+                <td><span class="check">✔</span></td>
+                <td><span class="check">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-col">Farm Tour</td>
+                <td><span class="check">✔</span></td>
+                <td><span class="check">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-col">Bullock Cart Ride</td>
+                <td><span class="check">✔</span></td>
+                <td><span class="check">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-col">Private Room/Cottage</td>
+                <td><span class="cross">✘</span></td>
+                <td><span class="check">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-col">Dinner</td>
+                <td><span class="cross">✘</span></td>
+                <td><span class="check">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-col">Campfire & Music</td>
+                <td><span class="cross">✘</span></td>
+                <td><span class="check">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-col">Star Gazing</td>
+                <td><span class="cross">✘</span></td>
+                <td><span class="check">✔</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<a href="https://wa.me/919970515438?text=Hello! I have a question about Kawalthe Stay packages." class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<div class="modal-overlay" id="booking-modal">
+    <div class="booking-widget">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="widget-header">
+            <h3 id="modal-pkg-name">Package Name</h3>
+            <div class="widget-price"><span id="modal-pkg-price">₹0</span> <small id="per-unit-text">/ person</small></div>
+        </div>
+        <div class="date-picker-container">
+            <input type="text" id="checkin" class="date-input" placeholder="Check-In">
+            <input type="text" id="checkout" class="date-input" placeholder="Check-Out">
+        </div>
+        <div class="guest-selector">
+            <strong>Guests</strong>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <button class="guest-btn" onclick="updateGuests(-1)">-</button>
+                <span id="guest-count" style="font-weight:bold;">1</span>
+                <button class="guest-btn" onclick="updateGuests(1)">+</button>
+            </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin:20px 0; font-weight:bold; font-size:18px;">
+            <span>Total</span><span id="total-price">₹0</span>
+        </div>
+        <button class="confirm-btn" onclick="confirmBooking()">Reserve via WhatsApp</button>
+    </div>
+</div>
+
+<footer id="footer" style="background: #111; color: #777; padding: 40px 20px; text-align: center; border-top: 1px solid #222;">
+    <p>&copy; 2024 Kawalthe Stay - Agro Tourism. All Rights Reserved.</p>
+</footer>
+
+<script>
+    let currentPrice = 0;
+    let guestCount = 1;
+    let currentPkg = "";
+    let isNightly = true;
+
+    // Initialize Calendars
+    const fpCheckin = flatpickr("#checkin", {
+        minDate: "today", dateFormat: "d-m-Y",
+        onChange: function(selectedDates, dateStr) {
+            fpCheckout.set('minDate', dateStr);
+            calculateTotal();
+        }
+    });
+    const fpCheckout = flatpickr("#checkout", {
+        minDate: "today", dateFormat: "d-m-Y",
+        onChange: function() { calculateTotal(); }
+    });
+
+    function openBooking(pkgName, price, nightly) {
+        currentPkg = pkgName; currentPrice = price; isNightly = nightly; guestCount = 1;
+        document.getElementById('booking-modal').style.display = 'flex';
+        document.getElementById('modal-pkg-name').innerText = pkgName;
+        document.getElementById('modal-pkg-price').innerText = "₹" + price.toLocaleString();
+        document.getElementById('per-unit-text').innerText = nightly ? "/ night per person" : "/ person";
+        document.getElementById('guest-count').innerText = 1;
+        fpCheckin.clear(); fpCheckout.clear();
+        document.getElementById('total-price').innerText = "₹0";
+    }
+
+    function closeModal() { document.getElementById('booking-modal').style.display = 'none'; }
+
+    function updateGuests(num) {
+        if (guestCount + num < 1) return;
+        guestCount += num;
+        document.getElementById('guest-count').innerText = guestCount;
+        calculateTotal();
+    }
+
+    function calculateTotal() {
+        const date1 = fpCheckin.selectedDates[0];
+        const date2 = fpCheckout.selectedDates[0];
+        if (!date1 || !date2) { document.getElementById('total-price').innerText = "Select Dates"; return; }
+        const diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+        
+        let total = isNightly ? (currentPrice * guestCount * diffDays) : (currentPrice * guestCount);
+        document.getElementById('total-price').innerText = "₹" + total.toLocaleString();
+    }
+
+    function confirmBooking() {
+        const checkin = document.getElementById('checkin').value;
+        const checkout = document.getElementById('checkout').value;
+        const total = document.getElementById('total-price').innerText;
+        if (!checkin || !checkout) { alert("Please select dates."); return; }
+
+        let message = `*New Booking Request*%0a%0a🏡 *Package:* ${currentPkg}%0a📅 *Check-In:* ${checkin}%0a📅 *Check-Out:* ${checkout}%0a👥 *Guests:* ${guestCount}%0a💰 *Est. Total:* ${total}`;
+        window.open(`https://wa.me/919970515438?text=${message}`, '_blank');
+        closeModal();
+    }
+
+    const menuItems = document.querySelectorAll('.menu-item');
+const previewImage = document.getElementById('menu-preview');
+
+menuItems.forEach(item => {
+    item.addEventListener('mouseenter', function() {
+        const imgSrc = this.getAttribute('data-img');
+        previewImage.src = imgSrc;
+    });
+});
+
+
+    
+</script>
+
+</body>
+</html>

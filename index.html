@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Kawalthe Stay - Authentic Agro Tourism</title>
+    
+    <link href="//fonts.googleapis.com/css?family=Signika:700%7CRoboto:700%2C400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- HOME PAGE SPECIFIC STYLES --- */
+        body { margin: 0; padding: 0; background-color: #f9f9f9; }
+
+        /* 1. HERO SLIDER */
+        #main-slideshow {
+            height: 100vh; position: relative; overflow: hidden;
+        }
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1s ease-in-out;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .slide.active { opacity: 1; }
+        .slide::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.35);
+        }
+        .slide-content {
+            position: relative; z-index: 2; text-align: center; color: white; padding: 20px;
+        }
+        .slide-content h2 {
+            font-family: 'Signika', sans-serif; font-size: 60px; margin-bottom: 10px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5); animation: fadeInUp 1s;
+        }
+        .slide-content p {
+            font-size: 24px; margin-bottom: 30px; font-family: 'Roboto Slab', serif; color: #ff9200; font-weight: bold;
+            animation: fadeInUp 1.5s;
+        }
+        .slider-btn {
+            background: #ff9200; color: white; padding: 15px 40px; font-size: 18px;
+            text-decoration: none; border-radius: 5px; font-weight: bold;
+            transition: 0.3s; display: inline-block; border: 2px solid #ff9200;
+        }
+        .slider-btn:hover { background: transparent; color: #ff9200; }
+        .prev, .next {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.5); color: white; border: none;
+            padding: 15px; cursor: pointer; z-index: 10; font-size: 24px; border-radius: 50%;
+        }
+        .prev { left: 20px; } .next { right: 20px; }
+
+        /* 2. ACTIVITY ICON STRIP (New) */
+        .activity-strip {
+            background: white; padding: 40px 20px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: -60px;
+            position: relative; z-index: 10; max-width: 1100px; margin-left: auto; margin-right: auto;
+            border-radius: 8px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .act-item { transition: 0.3s; padding: 10px; border-radius: 8px; }
+        .act-item:hover { background: #fff4e6; transform: translateY(-5px); }
+        .act-item i { font-size: 35px; color: #388E3C; margin-bottom: 10px; }
+        .act-item span { display: block; font-weight: bold; color: #555; font-size: 16px; }
+
+        /* 3. ABOUT SECTION */
+        .about-section { display: flex; flex-wrap: wrap; max-width: 1200px; margin: 80px auto; gap: 40px; padding: 0 20px; }
+        .about-images { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .about-images img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; }
+        .about-text { flex: 1; padding: 20px; }
+        
+        /* 4. WHO WE HOST */
+        .host-section { background: #fff; padding: 80px 20px; text-align: center; }
+        .host-grid {
+            display: flex; gap: 30px; max-width: 1200px; margin: 50px auto 0;
+            flex-wrap: wrap; justify-content: center;
+        }
+        .host-card {
+            background: white; border-radius: 12px; overflow: hidden; flex: 1; min-width: 300px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08); transition: 0.3s; border: 1px solid #eee;
+        }
+        .host-card:hover { transform: translateY(-10px); border-color: #ff9200; }
+        .host-img { height: 220px; background-size: cover; background-position: center; }
+        .host-content { padding: 30px; }
+        .host-content h3 { color: #333; margin: 0 0 10px; font-family: 'Signika', sans-serif; }
+        .host-content p { color: #666; font-size: 14px; margin-bottom: 20px; }
+        .host-btn { color: #ff9200; font-weight: bold; text-decoration: none; text-transform: uppercase; font-size: 14px; }
+
+        /* 5. TESTIMONIALS (Uses your slide5 as background) */
+        .reviews-section {
+            background: url('/images/slide5.jpg') fixed center;
+            background-size: cover; 
+            padding: 100px 20px; text-align: center; position: relative;
+        }
+        .reviews-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+        }
+        .reviews-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 30px;
+            padding: 40px 0;
+            width: max-content;
+            scroll-behavior: smooth;
+            z-index: 2;
+            position: relative;
+            scrollbar-width: none;
+            animation: scrollX 20s linear infinite;
+        }
+        @keyframes scrollX {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-10%);
+            }
+            }
+
+        .review-box {
+            min-width: 350px;
+            max-width: 400px;
+            background: rgba(143, 143, 143, 0.499);
+            border: 1px solid #ffffff;
+            height: auto;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 30px 25px;
+            color: white;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        .review-box:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.15);
+        }
+        .review-text {
+            font-size: 22px;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .review-author {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #ff9200;
+            font-size: 18px;
+        }
+        .review-stars {
+            margin: 10px 0;
+        }
+        .review-stars i {
+            color: #ff9200;
+            font-size: 20px;
+            margin-right: 2px;
+        }
+        .quote-icon {
+            font-size: 28px;
+            color: #ff9200;
+            margin-bottom: 10px;
+        }
+        .insta-item {
+            border-radius: 10%;
+            overflow: hidden;
+            margin: 30px;
+            border: #454545 solid 2px;
+        }
+
+        /* FLOATING WHATSAPP */
+        .whatsapp-float {
+            position: fixed; bottom: 30px; left: 30px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; text-align: center; font-size: 35px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10000; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobile Fixes */
+        @media (max-width: 768px) {
+            .slide-content h2 { font-size: 36px; }
+            .activity-strip { margin-top: 0; border-radius: 0; margin-bottom: 40px;}
+            .about-section { flex-direction: column-reverse; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="masthead split-header" role="banner" style="position: absolute; width: 100%; z-index: 999; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.1);">
+    <header class="header-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; max-width: 1200px; margin: 0 auto;">
+        <a href="index.html" style="font-size: 24px; font-weight: bold; color: white; text-decoration: none; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">KAWALTHE</a>
+        <nav class="navigation">
+            <ul style="list-style:none; display:flex; gap:30px; margin:0; padding:0;">
+                <li><a href="index.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Home</a></li>
+                <li><a href="about.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">About</a></li>
+                <li><a href="explore.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Explore</a></li>
+                <li><a href="packages.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Packages</a></li>
+                <li><a href="activity.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Activity</a></li>
+                <li><a href="photos.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Photos</a></li>
+                <li><a href="contact.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<div id="main-slideshow">
+    <div class="slide active" style="background-image: url('/images/slide5.jpg');">
+        <div class="slide-content">
+            <h2>Roots that grew you to flower</h2>
+            <p>Welcome to the heart of nature</p>
+            <a href="explore.html" class="slider-btn">Explore Farm</a>
+        </div>
+    </div>
+    <div class="slide" style="background-image: url('/images/slide2.jpg');">
+        <div class="slide-content">
+            <h2>Nature that dwells within you</h2>
+            <p>Relax, Rejuvenate, Reboot</p>
+            <a href="packages.html" class="slider-btn">View Packages</a>
+        </div>
+    </div>
+    <div class="slide" style="background-image: url('/images/slide3.jpg');">
+        <div class="slide-content">
+            <h2>Authentic Village Food</h2>
+            <p>Taste the soil of Maharashtra</p>
+            <a href="contact.html" class="slider-btn">Book a Table</a>
+        </div>
+    </div>
+    <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+    <button class="next" onclick="changeSlide(1)">&#10095;</button>
+</div>
+
+<div class="activity-strip">
+    <div class="act-item">
+        <i class="fas fa-tractor"></i>
+        <span>Tractor Rides</span>
+    </div>
+    <div class="act-item">
+        <i class="fas fa-leaf"></i>
+        <span>Organic Farm</span>
+    </div>
+    <div class="act-item">
+        <i class="fas fa-water"></i>
+        <span>River Fun</span>
+    </div>
+    <div class="act-item">
+        <i class="fas fa-utensils"></i>
+        <span>Chulha Food</span>
+    </div>
+    <div class="act-item">
+        <i class="fas fa-campground"></i>
+        <span>Camping</span>
+    </div>
+</div>
+
+<div class="about-section">
+    <div class="about-images">
+        <img src="/images/slide4.jpg" alt="Agro 1">
+        <img src="/images/agro2.jpg" alt="Agro 2">
+        <img src="/images/agro3.JPG" style="grid-column: span 2;" alt="Agro 3">
+    </div>
+    <div class="about-text">
+        <h4 style="color:#ff9200; font-family:'Signika',sans-serif; letter-spacing:2px; text-transform:uppercase;">The Kawalthe Experience</h4>
+        <h2 style="font-size:38px; color:#333; font-family:'Roboto Slab',serif;">Reconnect with Roots</h2>
+        <p style="color:#666; line-height:1.8; font-size:16px;">
+            Escape the concrete jungle and embrace the tranquility of rural Maharashtra. 
+            At <strong>Kawalthe Stay</strong>, we bridge the gap between urban hustle and nature's rhythm. 
+            Experience authentic living in eco-friendly mud cottages, savor organic farm-to-table dining, and witness the timeless bond between man and soil.
+        </p>
+        <br>
+        <a href="about.html" class="slider-btn" style="color:#fff; border:none;">Read Our Story</a>
+    </div>
+</div>
+
+<div class="host-section">
+    <h4 style="color:#ff9200; letter-spacing:2px;">PERFECT FOR EVERYONE</h4>
+    <h2 style="font-size:36px; color:#333; margin-top:5px;">Who Do We Host?</h2>
+    
+    <div class="host-grid">
+        <div class="host-card">
+            <div class="host-img" style="background-image: url('/images/slide4.jpg');"></div>
+            <div class="host-content">
+                <h3>Family & Friends</h3>
+                <p>Day picnics, weekend stays, and pure relaxation for your loved ones.</p>
+                <a href="packages.html" class="host-btn">View Family Plans</a>
+            </div>
+        </div>
+        <div class="host-card">
+            <div class="host-img" style="background-image: url('/images/agro2.jpg');"></div>
+            <div class="host-content">
+                <h3>School Trips</h3>
+                <p>Educational farm tours where kids learn how food grows. Fun + Learning.</p>
+                <a href="contact.html" class="host-btn">For Schools</a>
+            </div>
+        </div>
+        <div class="host-card">
+            <div class="host-img" style="background-image: url('/images/agro3.JPG');"></div>
+            <div class="host-content">
+                <h3>Corporate Offsites</h3>
+                <p>Team building activities in the mud. De-stress your employees.</p>
+                <a href="contact.html" class="host-btn">Corporate Deals</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="reviews-section">
+    <div class="reviews-scroll">
+        <div class="review-box">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="review-text">"An absolute gem near Pune! The food was exactly like my grandmother used to make, and the silence at night was magical. The bullock cart ride was the highlight for my kids."</p>
+            <div class="review-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p class="review-author">- Rahul Deshpande, Pune</p>
+        </div>
+        <div class="review-box">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="review-text">"A peaceful getaway! Loved the organic food and the river activities. The staff was very friendly and helpful."</p>
+            <div class="review-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <p class="review-author">- Priya Kulkarni, Mumbai</p>
+        </div>
+        <div class="review-box">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="review-text">"Perfect for families! My kids enjoyed the farm tour and camping. Highly recommend for a weekend escape."</p>
+            <div class="review-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <p class="review-author">- Amit Patil, Nashik</p>
+        </div>
+        <div class="review-box">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="review-text">"Perfect for families! My kids enjoyed the farm tour and camping. Highly recommend for a weekend escape."</p>
+            <div class="review-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <p class="review-author">- Amit Patil, Nashik</p>
+        </div>
+        <div class="review-box">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="review-text">"An absolute gem near Pune! The food was exactly like my grandmother used to make, and the silence at night was magical. The bullock cart ride was the highlight for my kids."</p>
+            <div class="review-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p class="review-author">- Rahul Deshpande, Pune</p>
+        </div>
+        <div class="review-box">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="review-text">"A peaceful getaway! Loved the organic food and the river activities. The staff was very friendly and helpful."</p>
+            <div class="review-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <p class="review-author">- Priya Kulkarni, Mumbai</p>
+        </div>
+        <div class="review-box">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="review-text">"Perfect for families! My kids enjoyed the farm tour and camping. Highly recommend for a weekend escape."</p>
+            <div class="review-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <p class="review-author">- Amit Patil, Nashik</p>
+        </div>
+        <div class="review-box">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="review-text">"Perfect for families! My kids enjoyed the farm tour and camping. Highly recommend for a weekend escape."</p>
+            <div class="review-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <p class="review-author">- Amit Patil, Nashik</p>
+        </div>
+        
+    </div>
+</div>
+
+<div style="background-color: #2b2b2b; color: white; padding: 100px 20px;">
+    <div style="display:flex; flex-wrap:wrap; max-width: 1200px; margin: 0 auto; align-items: center;">
+        <div style="flex: 1; min-width: 300px; padding: 20px;">
+            <img src="/images/whyus.jpg" style="width: 100%; height: auto; border: 5px solid rgba(255,255,255,0.1); border-radius: 10%;">
+        </div>
+        <div style="flex: 1; min-width: 300px; padding: 20px 40px;">
+            <h2 style="font-size: 50px; font-weight: bold; margin-bottom: 10px; margin-top: 0;">WHY US?</h2>
+            <h4 style="font-family: 'Roboto Slab', serif; color: #ff9200; font-size: 24px; margin-bottom: 30px;">An Unique Experience</h4>
+            <p style="color: #ccc; line-height: 1.8; font-size: 16px;">
+                We are located in a region known for its fresh & healthy air since the British period. 
+                Surrounded by a green belt, this fresh air remains pristine.
+            </p>
+            <br>
+            <a href="about.html" class="slider-btn" style="background:transparent; border: 2px solid #fff;">Read More</a>
+        </div>
+    </div>
+</div>
+
+<div class="insta-section">
+    <h2 class="insta-title">Follow the Farm Life</h2>
+    <a href="https://www.instagram.com/kawalthestay" target="_blank" class="insta-handle">@KawaltheStay</a>
+
+    <div class="insta-grid">
+        <div class="insta-item">
+            <a href="https://www.instagram.com/kawalthestay" target="_blank">
+                <img src="/images/slide2.jpg" alt="Farm Morning">
+                <div class="insta-overlay"><i class="fab fa-instagram"></i></div>
+            </a>
+        </div>
+        
+        <div class="insta-item">
+            <a href="https://www.instagram.com/kawalthestay" target="_blank">
+                <img src="/images/slide5.jpg" alt="Village Food">
+                <div class="insta-overlay"><i class="fab fa-instagram"></i></div>
+            </a>
+        </div>
+        
+        <div class="insta-item">
+            <a href="https://www.instagram.com/kawalthestay" target="_blank">
+                <img src="/images/agro2.jpg" alt="Tractor Ride">
+                <div class="insta-overlay"><i class="fab fa-instagram"></i></div>
+            </a>
+        </div>
+        
+        <div class="insta-item">
+            <a href="https://www.instagram.com/kawalthestay" target="_blank">
+                <img src="/images/agro3.JPG" alt="Cottage">
+                <div class="insta-overlay"><i class="fab fa-instagram"></i></div>
+            </a>
+        </div>
+    </div>
+
+    <a href="https://www.instagram.com/_kawalthe_konnection_?igsh=MWkxc2trYmh1MGl2Yw==" target="_blank" class="follow-btn">
+        <i class="fab fa-instagram"></i> Follow Us
+    </a>
+</div>
+<a href="https://wa.me/919970515438?text=Hello! I want to know more about Kawalthe Stay." class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<footer id="footer" style="background: #111; color: #777; padding: 40px 20px; text-align: center; border-top: 1px solid #222;">
+    <p>&copy; 2024 Kawalthe Stay - Agro Tourism. All Rights Reserved.</p>
+</footer>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function changeSlide(direction) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        slides[currentSlide].classList.add('active');
+    }
+
+    // Auto play
+    setInterval(() => { changeSlide(1); }, 5000);
+    
+</script>
+
+</body>
+</html>

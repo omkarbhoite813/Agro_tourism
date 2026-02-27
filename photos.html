@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Photo Gallery - Kawalthe Stay</title>
+    
+    <link href="//fonts.googleapis.com/css?family=Signika:700%7CRoboto:700%2C400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- PAGE STYLES --- */
+        body { margin: 0; padding: 0; background-color: #f9f9f9; }
+
+        /* 1. HERO BANNER */
+        .page-header {
+            background-image: url('https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20211127114203-2.jpg'); 
+            background-size: cover; background-position: center; height: 400px;
+            display: flex; align-items: center; justify-content: center; position: relative;
+        }
+        .page-header::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        .page-title { position: relative; z-index: 2; text-align: center; color: white; padding-top: 60px; }
+        .page-title h1 { font-family: 'Signika', sans-serif; font-size: 50px; margin: 0; }
+        .page-title p { font-size: 18px; margin-top: 10px; color: #ff9200; font-weight: 700; font-family: 'Roboto Slab', serif; }
+
+        /* 2. FILTERS */
+        .filter-section {
+            text-align: center; padding: 50px 20px 30px;
+        }
+        .filter-btn {
+            background: white; border: 1px solid #ddd; padding: 10px 25px; margin: 5px;
+            border-radius: 30px; font-family: 'Signika', sans-serif; font-weight: 600;
+            color: #555; cursor: pointer; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: #ff9200; border-color: #ff9200; color: white;
+            box-shadow: 0 5px 15px rgba(255, 146, 0, 0.3); transform: translateY(-2px);
+        }
+
+        /* 3. MASONRY GRID */
+        .gallery-container {
+            column-count: 3; column-gap: 20px;
+            max-width: 1200px; margin: 0 auto; padding: 0 20px 80px;
+        }
+        
+        .gallery-item {
+            position: relative; margin-bottom: 20px; break-inside: avoid;
+            border-radius: 12px; overflow: hidden; cursor: pointer;
+            transition: transform 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .gallery-item img {
+            width: 100%; display: block; border-radius: 12px; transition: 0.5s;
+        }
+
+        /* Hover Overlay */
+        .item-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+            opacity: 0; transition: 0.3s;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 20px; box-sizing: border-box;
+        }
+        
+        .gallery-item:hover { transform: translateY(-5px); }
+        .gallery-item:hover img { transform: scale(1.08); }
+        .gallery-item:hover .item-overlay { opacity: 1; }
+
+        .item-text h4 { color: #ff9200; margin: 0; font-size: 18px; font-family: 'Signika', sans-serif; }
+        .item-text p { color: white; margin: 5px 0 0; font-size: 14px; opacity: 0.9; }
+        
+        .zoom-icon {
+            position: absolute; top: 20px; right: 20px;
+            background: white; width: 35px; height: 35px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #333; opacity: 0; transition: 0.3s; transform: translateY(-10px);
+        }
+        .gallery-item:hover .zoom-icon { opacity: 1; transform: translateY(0); }
+
+        /* Responsive Columns */
+        @media (max-width: 900px) { .gallery-container { column-count: 2; } }
+        @media (max-width: 600px) { .gallery-container { column-count: 1; } }
+
+        /* 4. LIGHTBOX */
+        .lightbox {
+            display: none; position: fixed; z-index: 9999; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+            justify-content: center; align-items: center; backdrop-filter: blur(5px);
+        }
+        .lightbox img {
+            max-width: 90%; max-height: 85vh; border: 4px solid white; border-radius: 4px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .lightbox-close {
+            position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer; transition: 0.3s;
+        }
+        .lightbox-close:hover { color: #ff9200; transform: rotate(90deg); }
+
+        .lightbox-caption {
+            position: absolute; bottom: 30px; color: white; font-size: 18px; background: rgba(0,0,0,0.7);
+            padding: 10px 20px; border-radius: 30px; font-family: 'Signika', sans-serif;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="masthead split-header" role="banner" style="position: absolute; width: 100%; z-index: 999; background: transparent;">
+    <header class="header-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; max-width: 1200px; margin: 0 auto;">
+        <a href="index.html" style="font-size: 24px; font-weight: bold; color: white; text-decoration: none; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">KAWALTHE</a>
+        <nav class="navigation">
+            <ul style="list-style:none; display:flex; gap:30px; margin:0; padding:0;">
+                <li><a href="index.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Home</a></li>
+                <li><a href="about.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">About</a></li>
+                <li><a href="explore.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Explore</a></li>
+                <li><a href="packages.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Packages</a></li>
+                <li><a href="activity.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Activity</a></li>
+                <li><a href="photos.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Photos</a></li>
+                <li><a href="contact.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Life at Kawalthe</h1>
+        <p>A Visual Journey Through Our Farm</p>
+    </div>
+</div>
+
+<div class="filter-section">
+    <button class="filter-btn active" onclick="filterGallery('all')">All Photos</button>
+    <button class="filter-btn" onclick="filterGallery('stay')">Cottages & Stay</button>
+    <button class="filter-btn" onclick="filterGallery('nature')">Nature & Farm</button>
+    <button class="filter-btn" onclick="filterGallery('food')">Village Food</button>
+</div>
+
+<div class="gallery-container">
+
+    <div class="gallery-item food animate__animated animate__fadeInUp" onclick="openLightbox(this)">
+        <img src="images/food/GavranChicken.png" alt="Organic Thali">
+        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+        <div class="item-overlay">
+            <div class="item-text">
+                <h4>Organic Thali</h4>
+                <p>Fresh from farm to table.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-item stay animate__animated animate__fadeInUp" onclick="openLightbox(this)">
+        <img src="images/stay/img3.jpeg" alt="Night View">
+        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+        <div class="item-overlay">
+            <div class="item-text">
+                <h4>Evening Vibes</h4>
+                <p>Relax under the open sky.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-item nature animate__animated animate__fadeInUp" onclick="openLightbox(this)">
+        <img src="images/stay/img4.jpeg" alt="Green Farm">
+        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+        <div class="item-overlay">
+            <div class="item-text">
+                <h4>Lush Greenery</h4>
+                <p>Morning walks in fresh air.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-item nature animate__animated animate__fadeInUp" onclick="openLightbox(this)">
+        <img src="images/stay/img1.jpeg" alt="Sunrise">
+        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+        <div class="item-overlay">
+            <div class="item-text">
+                <h4>Golden Mornings</h4>
+                <p>Sunrise view from the farm.</p>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="gallery-item stay animate__animated animate__fadeInUp" onclick="openLightbox(this)">
+        <img src="https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20211127114203-2.jpg" alt="Rustic Cottage">
+        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+        <div class="item-overlay">
+            <div class="item-text">
+                <h4>Rustic Cottages</h4>
+                <p>Traditional mud houses with modern comfort.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-item food animate__animated animate__fadeInUp" onclick="openLightbox(this)">
+        <img src="images/food/HurdaParty.png" alt="Chulha Cooking">
+        <div class="zoom-icon"><i class="fas fa-search-plus"></i></div>
+        <div class="item-overlay">
+            <div class="item-text">
+                <h4>Traditional Cooking</h4>
+                <p>Food cooked on earthen chulhas.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+    <img id="lightbox-img" src="">
+    <div class="lightbox-caption" id="lightbox-caption">Caption Text</div>
+</div>
+
+<footer id="footer" style="background: #111; color: #777; padding: 40px 20px; text-align: center; border-top: 1px solid #222;">
+    <p>&copy; 2024 Kawathe Stay - Agro Tourism. All Rights Reserved.</p>
+</footer>
+
+<script>
+    // FILTER FUNCTION
+    function filterGallery(category) {
+        let items = document.querySelectorAll('.gallery-item');
+        let buttons = document.querySelectorAll('.filter-btn');
+
+        // Toggle active button
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        items.forEach(item => {
+            // Add Animation Reset
+            item.classList.remove('animate__fadeInUp');
+            void item.offsetWidth; // trigger reflow
+            item.classList.add('animate__fadeInUp');
+
+            if (category === 'all' || item.classList.contains(category)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    // LIGHTBOX FUNCTIONS
+    function openLightbox(element) {
+        let imgSrc = element.querySelector('img').src;
+        let title = element.querySelector('h4').innerText;
+        
+        document.getElementById('lightbox-img').src = imgSrc;
+        document.getElementById('lightbox-caption').innerText = title;
+        document.getElementById('lightbox').style.display = 'flex';
+    }
+
+    function closeLightbox(e) {
+        // Close only if clicking outside the image or on the X
+        if(e.target !== document.getElementById('lightbox-img')) {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>

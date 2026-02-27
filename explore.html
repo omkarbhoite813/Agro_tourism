@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Explore & Shop - Village Treasures</title>
+    
+    <link href="//fonts.googleapis.com/css?family=Signika:700%7CRoboto:700%2C400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- PAGE SPECIFIC STYLES --- */
+        body { margin: 0; padding: 0; font-family: 'Signika', sans-serif; background-color: #f9f9f9; }
+
+        /* 1. Page Header */
+        .page-header {
+            /* Store Banner Image */
+            background-image: url('https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-top: 0;
+        }
+        .page-header::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        .page-title {
+            position: relative; z-index: 2; text-align: center; color: white; padding-top: 60px;
+        }
+        .page-title h1 { font-size: 50px; margin: 0; margin-bottom: 10px; }
+        .page-title p { font-size: 18px; opacity: 0.9; font-family: 'Roboto Slab', serif; }
+
+        /* 2. Shop Layout */
+        .shop-layout {
+            display: flex;
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            gap: 40px;
+        }
+        
+        /* Sidebar */
+        .shop-sidebar {
+            flex: 0 0 250px;
+            display: none; 
+        }
+        @media(min-width: 768px) { .shop-sidebar { display: block; } }
+
+        .category-list h3 { border-bottom: 2px solid #ff9200; padding-bottom: 10px; margin-bottom: 20px; }
+        .category-list ul { list-style: none; padding: 0; margin: 0; }
+        .category-list li { margin-bottom: 10px; }
+        .category-list a { text-decoration: none; color: #555; display: flex; justify-content: space-between; transition: 0.2s; }
+        .category-list a:hover { color: #ff9200; }
+
+        /* Product Grid */
+        .shop-content { flex: 1; }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        /* 3. Product Card */
+        .product-card {
+            background: white; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;
+            border: 1px solid #eee; position: relative;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+        .product-image { height: 250px; overflow: hidden; background: #f4f4f4; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .product-card:hover .product-image img { transform: scale(1.1); }
+
+        .product-badge {
+            position: absolute; top: 10px; left: 10px;
+            background: #4caf50; color: white; padding: 4px 10px;
+            font-size: 12px; border-radius: 4px; font-weight: 600; z-index: 2;
+        }
+
+        .product-details { padding: 20px; text-align: center; }
+        .product-category { font-size: 12px; color: #999; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .product-title { font-size: 18px; margin: 0 0 10px; color: #333; font-weight: 700; }
+        .product-price { color: #ff9200; font-size: 20px; font-weight: 700; display: block; margin-bottom: 15px; font-family: 'Roboto Slab', serif; }
+        
+        .add-cart-btn {
+            width: 100%; padding: 10px 0; background: #333; color: white;
+            border: none; border-radius: 4px; cursor: pointer; font-weight: 600; transition: 0.3s;
+        }
+        .add-cart-btn:hover { background: #ff9200; }
+
+        /* --- CART SIDEBAR --- */
+        .cart-sidebar {
+            position: fixed; top: 0; right: -400px;
+            width: 350px; height: 100%; background: white;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.2); z-index: 2000;
+            transition: 0.4s ease; display: flex; flex-direction: column;
+        }
+        .cart-sidebar.active { right: 0; }
+        
+        .cart-header {
+            background: #333; color: white; padding: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .close-cart { cursor: pointer; font-size: 20px; }
+
+        .cart-items { flex-grow: 1; overflow-y: auto; padding: 20px; }
+        .cart-item {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;
+        }
+        .remove-item { color: red; cursor: pointer; margin-left: 10px; }
+
+        .cart-footer { padding: 20px; border-top: 1px solid #eee; background: #f9f9f9; }
+        .total-price { font-size: 20px; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 15px; }
+        
+        .btn-checkout {
+            background-color: #25D366; /* WhatsApp Green */
+            color: white; width: 100%; padding: 15px;
+            border: none; border-radius: 5px; font-size: 16px; font-weight: bold;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-checkout:hover { background-color: #1ebc57; }
+
+        /* Floating Cart Icon */
+        .cart-float {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #ff9200; color: white;
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000;
+        }
+        .cart-count {
+            position: absolute; top: 0; right: 0;
+            background: red; color: white;
+            font-size: 12px; width: 20px; height: 20px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="masthead split-header" role="banner" style="position: absolute; width: 100%; z-index: 999; background: transparent;">
+    <header class="header-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; max-width: 1200px; margin: 0 auto;">
+        
+        <a href="index.html" style="font-size: 24px; font-weight: bold; color: white; text-decoration: none; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">KAWALTHE</a>
+
+        <nav class="navigation">
+            <ul style="list-style:none; display:flex; gap:30px; margin:0; padding:0;">
+                <li><a href="index.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Home</a></li>
+                <li><a href="about.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">About</a></li>
+                <li><a href="explore.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Explore</a></li>
+                <li><a href="packages.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Packages</a></li>
+                <li><a href="activity.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Activity</a></li>
+                <li><a href="photos.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Photos</a></li>
+                <li><a href="contact.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+<div class="page-header">
+    <div class="page-title">
+        <h1>Village Treasures</h1>
+        <p>Support local artisans. Authentic, Handcrafted, Organic.</p>
+    </div>
+</div>
+
+<div class="shop-layout">
+    
+    <aside class="shop-sidebar">
+        <div class="category-list">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="#">All Products <span>(12)</span></a></li>
+                <li><a href="#">Organic Food <span>(4)</span></a></li>
+                <li><a href="#">Handicrafts <span>(5)</span></a></li>
+                <li><a href="#">Home Decor <span>(3)</span></a></li>
+            </ul>
+        </div>
+        <div class="category-list" style="margin-top: 40px;">
+            <h3>Impact</h3>
+            <p style="font-size: 14px; line-height: 1.6; color: #666;">
+                100% of proceeds go directly to the village artisans and farmers of Kawathe. Your purchase supports sustainable livelihoods.
+            </p>
+        </div>
+    </aside>
+
+    <div class="shop-content">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+            <span style="color:#666; font-size:14px;">Shop our hand-picked collection</span>
+            
+            <select id="sort-select" onchange="sortProducts()" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; outline: none;">
+                <option value="default">Default Sorting</option>
+                <option value="low-high">Price: Low to High</option>
+                <option value="high-low">Price: High to Low</option>
+            </select>
+        </div>
+
+        <div class="product-grid" id="product-list">
+            </div>
+
+    </div>
+</div>
+
+<div class="cart-float" onclick="toggleCart()">
+    <i class="fas fa-shopping-basket"></i>
+    <div class="cart-count" id="float-cart-count">0</div>
+</div>
+
+<div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+        <h3>Your Cart</h3>
+        <span class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></span>
+    </div>
+    <div class="cart-items" id="cart-items">
+        <p style="text-align:center; margin-top:50px; color:#888;">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer">
+        <div class="total-price">
+            <span>Total:</span>
+            <span id="cart-total">₹0</span>
+        </div>
+        <button class="btn-checkout" onclick="checkoutWhatsApp()">
+            <i class="fab fa-whatsapp"></i> Order via WhatsApp
+        </button>
+    </div>
+</div>
+
+<footer id="footer" style="background: #111; color: #777; padding: 40px 20px; text-align: center; border-top: 1px solid #222;">
+    <p>&copy; 2024 Kawalthe Stay - Agro Tourism. All Rights Reserved.</p>
+</footer>
+
+<script>
+    // 1. PRODUCT DATA (Edit your products here)
+    const products = [
+        {
+            id: 1,
+            name: "Pure Forest Honey",
+            category: "Food",
+            price: 450,
+            image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/15-e1640174361842.jpg",
+            badge: "Organic"
+        },
+        {
+            id: 2,
+            name: "Earthen Clay Pot",
+            category: "Decor",
+            price: 250,
+            image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20210828140907.jpg",
+            badge: "Handmade"
+        },
+        {
+            id: 3,
+            name: "Village Masala Mix",
+            category: "Food",
+            price: 120,
+            image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/15-e1640174361842.jpg", 
+            badge: ""
+        },
+        {
+            id: 4,
+            name: "Warli Art Frame",
+            category: "Handicrafts",
+            price: 850,
+            image: "https://www.hachikotourism.in/wp-content/uploads/2020/03/parashar-images-05-300x169.jpg",
+            badge: "Art"
+        },
+        {
+            id: 5,
+            name: "Bamboo Hand Basket",
+            category: "Utility",
+            price: 300,
+            image: "https://www.hachikotourism.in/wp-content/uploads/2020/03/agritourism-pune-1-4.jpg",
+            badge: ""
+        },
+        {
+            id: 6,
+            name: "Grandma's Mango Pickle",
+            category: "Food",
+            price: 180,
+            image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/15-e1640174361842.jpg",
+            badge: "New"
+        }
+    ];
+
+    // Create a copy for sorting
+    let displayedProducts = [...products];
+    let cart = [];
+
+    // 2. RENDER PRODUCTS TO GRID
+    const productList = document.getElementById("product-list");
+    
+    function displayProducts() {
+        productList.innerHTML = displayedProducts.map(product => `
+            <div class="product-card">
+                ${product.badge ? `<span class="product-badge" style="background:${getBadgeColor(product.badge)}">${product.badge}</span>` : ''}
+                <div class="product-image">
+                    <img src="${product.image}" alt="${product.name}">
+                </div>
+                <div class="product-details">
+                    <span class="product-category">${product.category}</span>
+                    <h3 class="product-title">${product.name}</h3>
+                    <span class="product-price">₹${product.price}.00</span>
+                    <button class="add-cart-btn" onclick="addToCart(${product.id})">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+        `).join("");
+    }
+
+    function getBadgeColor(badge) {
+        if(badge === 'New') return '#2196F3';
+        if(badge === 'Handmade') return '#ff9200';
+        if(badge === 'Art') return '#9c27b0';
+        return '#4caf50'; // Default Green
+    }
+
+    // --- SORTING FUNCTION ---
+    function sortProducts() {
+        const sortValue = document.getElementById("sort-select").value;
+
+        if (sortValue === "low-high") {
+            displayedProducts.sort((a, b) => a.price - b.price);
+        } else if (sortValue === "high-low") {
+            displayedProducts.sort((a, b) => b.price - a.price);
+        } else {
+            displayedProducts = [...products]; // Reset order
+        }
+        displayProducts();
+    }
+
+    // 3. CART FUNCTIONS
+    function addToCart(id) {
+        const item = products.find(p => p.id === id);
+        cart.push(item);
+        updateCartUI();
+        toggleCart(); // Open sidebar to show user it worked
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        document.getElementById("float-cart-count").innerText = cart.length;
+        
+        const cartItemsContainer = document.getElementById("cart-items");
+        const totalContainer = document.getElementById("cart-total");
+        
+        if(cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:#888;">Your cart is empty.</p>';
+            totalContainer.innerText = "₹0";
+            return;
+        }
+
+        let total = 0;
+        cartItemsContainer.innerHTML = cart.map((item, index) => {
+            total += item.price;
+            return `
+                <div class="cart-item">
+                    <div>
+                        <h4 style="margin:0; font-size:16px;">${item.name}</h4>
+                        <span style="color:#888; font-size:14px;">₹${item.price}</span>
+                    </div>
+                    <i class="fas fa-trash remove-item" onclick="removeFromCart(${index})"></i>
+                </div>
+            `;
+        }).join("");
+        
+        totalContainer.innerText = "₹" + total;
+    }
+
+    function toggleCart() {
+        document.getElementById("cart-sidebar").classList.toggle("active");
+    }
+
+    // 4. CHECKOUT VIA WHATSAPP
+    function checkoutWhatsApp() {
+        if(cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        let message = "Hello Kawalthe Stay, I would like to order the following:%0a%0a";
+        let total = 0;
+        
+        cart.forEach((item, index) => {
+            message += `${index + 1}. ${item.name} - ₹${item.price}%0a`;
+            total += item.price;
+        });
+
+        message += `%0a*Total Order Value: ₹${total}*`;
+        
+        // REPLACE WITH YOUR ACTUAL WHATSAPP NUMBER (No spaces/symbols)
+        const phoneNumber = "919970515438"; 
+        
+        window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+    }
+
+    // Initialize Page
+    displayProducts();
+
+</script>
+
+</body>
+</html>
