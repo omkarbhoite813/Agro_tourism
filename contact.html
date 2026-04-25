@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Contact Us - Kawalthe Stay</title>
+    
+    <link href="//fonts.googleapis.com/css?family=Signika:700%7CRoboto:700%2C400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- PAGE SPECIFIC STYLES --- */
+        body { margin: 0; padding: 0; background-color: #f9f9f9; font-family: 'Signika', sans-serif; }
+
+        /* 1. Header */
+        .page-header {
+            background-image: url('https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20211219103738.jpg'); 
+            background-size: cover; background-position: center; height: 450px;
+            display: flex; align-items: center; justify-content: center; position: relative;
+            margin-top: 0;
+        }
+        .page-header::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+        }
+        .page-title { position: relative; z-index: 2; text-align: center; color: white; margin-bottom: 50px; }
+        .page-title h1 { font-family: 'Signika', sans-serif; font-size: 50px; margin: 0 0 10px; }
+        .page-title p { font-size: 18px; opacity: 0.9; font-family: 'Roboto Slab', serif; color: #ff9200; font-weight: bold; }
+
+        /* 2. Floating Contact Cards */
+        .cards-container {
+            display: flex; justify-content: center; gap: 30px;
+            max-width: 1200px; margin: -80px auto 80px; position: relative; z-index: 10; padding: 0 20px;
+        }
+
+        .contact-card {
+            background: white; padding: 40px 30px; text-align: center;
+            border-radius: 8px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); flex: 1;
+            transition: transform 0.3s ease; border-bottom: 4px solid #ff9200;
+        }
+        .contact-card:hover { transform: translateY(-10px); }
+        
+        .icon-box {
+            width: 70px; height: 70px; background: #fff4e6; color: #ff9200;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 28px; margin: 0 auto 20px;
+        }
+        
+        .contact-card h3 { font-family: 'Signika', sans-serif; margin: 0 0 10px; font-size: 22px; }
+        .contact-card p { color: #666; font-size: 15px; line-height: 1.6; margin: 0; }
+        .contact-card a { color: #333; text-decoration: none; font-weight: 600; transition: color 0.2s;}
+        .contact-card a:hover { color: #ff9200; }
+
+        /* 3. Split Layout */
+        .split-section {
+            display: flex; max-width: 1200px; margin: 0 auto 100px; padding: 0 20px; gap: 50px;
+        }
+        .form-side { flex: 1; }
+        .map-side { flex: 1; min-height: 450px; border-radius: 8px; overflow: hidden; background: #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        
+        .section-title { margin-bottom: 30px; }
+        .section-title h2 { font-size: 36px; margin-bottom: 10px; }
+        .section-title span { color: #ff9200; font-family: 'Roboto Slab', serif; font-weight: 700; }
+
+        .custom-input {
+            width: 100%; padding: 15px; margin-bottom: 20px;
+            border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9;
+            font-family: 'Roboto', sans-serif; font-size: 15px; box-sizing: border-box;
+            transition: 0.3s;
+        }
+        .custom-input:focus { outline: none; border-color: #ff9200; background: white; box-shadow: 0 0 8px rgba(255,146,0,0.2); }
+        textarea.custom-input { resize: vertical; height: 150px; }
+
+        /* Orange Button Style */
+        .slider-btn {
+            background-color: #ff9200; color: white; padding: 15px 30px;
+            font-size: 16px; font-weight: bold; text-transform: uppercase;
+            border-radius: 5px; transition: background 0.3s; display: inline-block;
+        }
+        .slider-btn:hover { background-color: #e08000; }
+
+        /* --- FLOATING WHATSAPP BUTTON --- */
+        .whatsapp-float {
+            position: fixed; bottom: 30px; left: 30px;
+            background-color: #25D366; color: white;
+            width: 60px; height: 60px; border-radius: 50%;
+            text-align: center; font-size: 35px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 10000; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: all 0.3s ease;
+        }
+        .whatsapp-float:hover { background-color: #128C7E; transform: scale(1.1); }
+
+        /* Mobile Responsive */
+        @media screen and (max-width: 900px) {
+            .cards-container { flex-direction: column; margin-top: -40px; }
+            .split-section { flex-direction: column; }
+            .page-header { height: 350px; }
+            .map-side { height: 300px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="masthead split-header" role="banner" style="position: absolute; width: 100%; z-index: 999; background: rgba(0,0,0,0.6);">
+    <header class="header-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; max-width: 1200px; margin: 0 auto;">
+        
+        <a href="index.html" style="font-size: 24px; font-weight: bold; color: white; text-decoration: none; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">KAWALTHE</a>
+
+        <nav class="navigation">
+            <ul style="list-style:none; display:flex; gap:30px; margin:0; padding:0;">
+                <li><a href="index.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Home</a></li>
+                <li><a href="about.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">About</a></li>
+                <li><a href="explore.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Explore</a></li>
+                <li><a href="packages.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Packages</a></li>
+                <li><a href="activity.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Activity</a></li>
+                <li><a href="photos.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Photos</a></li>
+                <li><a href="contact.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px;">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Get in Touch</h1>
+        <p>We'd love to host you at Kawalthe Stay</p>
+    </div>
+</div>
+
+<div class="cards-container">
+    <div class="contact-card">
+        <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+        <h3>Our Address</h3>
+        <p>At Post Kawalthe, Taluka Junnar,<br>District Pune, Maharashtra 412411</p>
+    </div>
+    <div class="contact-card">
+        <div class="icon-box"><i class="fas fa-phone-alt"></i></div>
+        <h3>Call Us</h3>
+        <p><a href="tel:+919970515438">+91 7045157501</a><br><a href="tel:+917038890500">+91 7038 890 500</a></p>
+    </div>
+    <div class="contact-card">
+        <div class="icon-box"><i class="fas fa-envelope"></i></div>
+        <h3>Email Us</h3>
+        <p><a href="mailto:info@Kawalthestay.in">info@Kawalthestay.in</a><br><a href="mailto:booking@Kawalthestay.in">booking@Kawalthestay.in</a></p>
+    </div>
+</div>
+
+<div class="split-section">
+    
+    <div class="form-side">
+        <div class="section-title">
+            <span>MESSAGE US</span>
+            <h2>Have Questions?</h2>
+            <p style="color:#666;">Fill out the form below and we will get back to you immediately via WhatsApp.</p>
+        </div>
+        
+        <form onsubmit="sendMessage(event)">
+            <input type="text" id="name" class="custom-input" placeholder="Your Name" required>
+            <input type="email" id="email" class="custom-input" placeholder="Your Email Address" required>
+            <input type="tel" id="phone" class="custom-input" placeholder="Phone Number" required>
+            <textarea id="msg" class="custom-input" placeholder="Your Message or Enquiry Details"></textarea>
+            
+            <button type="submit" class="slider-btn" style="border:none; cursor:pointer; width:100%;">
+                Send via WhatsApp <i class="fab fa-whatsapp"></i>
+            </button>
+        </form>
+    </div>
+
+    <div class="map-side">
+        <iframe 
+            src="https://maps.google.com/maps?q=Kawathe,Junnar,Pune&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy">
+        </iframe>
+    </div>
+
+</div>
+
+<a href="https://wa.me/919970515438?text=Hello! I have a question about Kawalthe Stay." class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<footer id="footer" style="background: #111; color: #777; padding: 40px 20px; text-align: center; border-top: 1px solid #222;">
+    <p>© 2024 Kawalthe Stay - Agro Tourism. All Rights Reserved.</p>
+</footer>
+
+<script>
+    function sendMessage(e) {
+        e.preventDefault(); // Stop page refresh
+
+        // 1. Get Values
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const msg = document.getElementById('msg').value;
+
+        // 2. Format Message
+        const whatsappMsg = `*New Website Inquiry*%0a%0a👤 *Name:* ${name}%0a📧 *Email:* ${email}%0a📞 *Phone:* ${phone}%0a💬 *Message:* ${msg}`;
+
+        // 3. Open WhatsApp (Replace with your number)
+        const myNumber = "919970515438"; 
+        window.open(`https://wa.me/${myNumber}?text=${whatsappMsg}`, '_blank');
+    }
+</script>
+
+</body>
+</html>

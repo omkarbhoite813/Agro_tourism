@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Explore & Shop - Village Treasures</title>
+    
+    <link href="//fonts.googleapis.com/css?family=Signika:700%7CRoboto:700%2C400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- PAGE SPECIFIC STYLES --- */
+        body { margin: 0; padding: 0; font-family: 'Signika', sans-serif; background-color: #f9f9f9; overflow-x: hidden; }
+
+        /* 1. Page Header */
+        .page-header {
+            background-image: url(/images/bg\ exp.jpg);
+            background-size: cover; background-position: center; height: 350px;
+            display: flex; align-items: center; justify-content: center; position: relative; margin-top: 0;
+        }
+        .page-header::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
+        }
+        .page-title { position: relative; z-index: 2; text-align: center; color: white; padding-top: 60px; }
+        .page-title h1 { font-size: 50px; margin: 0 0 10px; }
+        .page-title p { font-size: 18px; opacity: 0.9; font-family: 'Roboto Slab', serif; }
+
+        /* 2. Shop Layout */
+        .shop-layout { display: flex; max-width: 1200px; margin: 60px auto; padding: 0 20px; gap: 40px; }
+        
+        /* Sidebar */
+        .shop-sidebar { flex: 0 0 250px; display: none; }
+        @media(min-width: 768px) { .shop-sidebar { display: block; } }
+        .category-list h3 { border-bottom: 2px solid #ff9200; padding-bottom: 10px; margin-bottom: 20px; color: #333; }
+        .impact-box { background: #fff8f0; border-left: 4px solid #ff9200; padding: 15px; border-radius: 4px; margin-top: 30px;}
+        
+        /* Product Grid Area */
+        .shop-content { flex: 1; }
+        .collections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; perspective: 1000px; }
+
+        /* =========================================
+           3. MEET THE MAKER FLIP CARDS
+           ========================================= */
+        .flip-card {
+            background-color: transparent; width: 100%; height: 380px;
+            perspective: 1000px; cursor: pointer;
+        }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.8s; transform-style: preserve-3d;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 15px;
+        }
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 15px; overflow: hidden;
+        }
+        
+        /* FRONT OF CARD (The Collection) */
+        .flip-card-front { background-color: #fff; display: flex; flex-direction: column; }
+        .flip-card-front img { width: 100%; height: 250px; object-fit: cover; }
+        .front-content { padding: 20px; display: flex; flex-direction: column; justify-content: center; flex-grow: 1; }
+        .front-content h3 { margin: 0; color: #333; font-size: 22px; }
+        .front-content span { color: #ff9200; font-family: 'Roboto Slab', serif; font-size: 14px; margin-top: 5px; }
+        .flip-hint { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-family: 'Roboto', sans-serif;}
+
+        /* BACK OF CARD (Meet the Maker) */
+        .flip-card-back {
+            background: linear-gradient(135deg, #2e2e2e, #111); color: white;
+            transform: rotateY(180deg); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 25px;
+        }
+        .artisan-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #ff9200; margin-bottom: 15px; object-fit: cover; }
+        .flip-card-back h4 { margin: 0 0 5px; font-size: 14px; color: #ff9200; text-transform: uppercase; letter-spacing: 1px;}
+        .flip-card-back h3 { margin: 0 0 15px; font-size: 24px; }
+        .flip-card-back p { font-size: 14px; line-height: 1.6; color: #ccc; font-family: 'Roboto', sans-serif; margin-bottom: 20px;}
+        .view-collection-btn {
+            background: #ff9200; color: white; border: none; padding: 10px 25px;
+            border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .view-collection-btn:hover { background: #fff; color: #ff9200; }
+
+        /* =========================================
+           4. SUB-PRODUCT DRAWER (GLASSMORPHISM)
+           ========================================= */
+        .collection-drawer-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 3000; display: none; align-items: flex-end; justify-content: center;
+        }
+        .collection-drawer {
+            background: #fff; width: 100%; max-width: 800px; height: 80vh;
+            border-radius: 20px 20px 0 0; padding: 30px; box-sizing: border-box;
+            transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; position: relative;
+        }
+        .drawer-open .collection-drawer { transform: translateY(0); }
+        .close-drawer { position: absolute; top: 20px; right: 25px; font-size: 28px; cursor: pointer; color: #888; transition: 0.3s;}
+        .close-drawer:hover { color: #d32f2f; }
+        .drawer-header { border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+        .drawer-header h2 { margin: 0; color: #333; font-size: 28px; }
+        .drawer-header p { margin: 5px 0 0; color: #777; font-family: 'Roboto', sans-serif; }
+        
+        .sub-products-list { flex-grow: 1; overflow-y: auto; padding-right: 10px; }
+        .sub-product-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 15px; border: 1px solid #eee; border-radius: 12px; margin-bottom: 15px;
+            transition: 0.3s; background: #fdfdfd;
+        }
+        .sub-product-item:hover { border-color: #ff9200; box-shadow: 0 5px 15px rgba(255,146,0,0.1); }
+        .sub-product-info { display: flex; align-items: center; gap: 15px; }
+        .sub-img { width: 70px; height: 70px; border-radius: 8px; object-fit: cover; }
+        .sub-details h4 { margin: 0 0 5px; font-size: 18px; color: #333; }
+        .sub-details .price { color: #ff9200; font-weight: bold; font-family: 'Roboto Slab', serif; }
+        .add-sub-btn { background: #333; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s; font-size: 16px; display: flex; align-items: center; justify-content: center;}
+        .add-sub-btn:hover { background: #ff9200; transform: scale(1.1);}
+
+        /* --- CART SIDEBAR --- */
+        .cart-sidebar { position: fixed; top: 0; right: -400px; width: 350px; height: 100%; background: white; box-shadow: -5px 0 30px rgba(0,0,0,0.2); z-index: 4000; transition: 0.4s ease; display: flex; flex-direction: column; }
+        .cart-sidebar.active { right: 0; }
+        .cart-header { background: #333; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .close-cart { cursor: pointer; font-size: 20px; }
+        .cart-items { flex-grow: 1; overflow-y: auto; padding: 20px; font-family: 'Roboto', sans-serif;}
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+        .remove-item { color: #d32f2f; cursor: pointer; margin-left: 10px; padding: 5px;}
+        .cart-footer { padding: 20px; border-top: 1px solid #eee; background: #f9f9f9; }
+        .total-price { font-size: 20px; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 15px; color: #333;}
+        .btn-checkout { background-color: #25D366; color: white; width: 100%; padding: 15px; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-checkout:hover { background-color: #1ebc57; }
+
+        /* Floating Cart Icon */
+        .cart-float { position: fixed; bottom: 30px; right: 30px; background: #ff9200; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000; transition: 0.3s;}
+        .cart-float:hover { transform: scale(1.1); }
+        .cart-count { position: absolute; top: 0; right: 0; background: #d32f2f; color: white; font-size: 12px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Roboto', sans-serif; font-weight: bold;}
+    </style>
+</head>
+
+<body>
+
+<div class="masthead split-header" role="banner" style="position: absolute; width: 100%; z-index: 999; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.1);">
+    <header class="header-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; max-width: 1200px; margin: 0 auto;">
+        <a href="index.html" style="font-size: 24px; font-weight: bold; color: white; text-decoration: none; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">KAWALTHE</a>
+        <nav class="navigation">
+            <ul style="list-style:none; display:flex; gap:30px; margin:0; padding:0;">
+                <li><a href="index.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Home</a></li>
+                <li><a href="about.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">About</a></li>
+                <li><a href="explore.html" style="text-decoration:none; color:#ff9200; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Explore</a></li>
+                <li><a href="packages.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Packages</a></li>
+                <li><a href="activity.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Activity</a></li>
+                <li><a href="photos.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Photos</a></li>
+                <li><a href="contact.html" style="text-decoration:none; color:#ffffff; font-weight:600; text-transform: uppercase; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Village Treasures</h1>
+        <p>Support local artisans. Authentic, Handcrafted, Organic.</p>
+    </div>
+</div>
+
+<div class="shop-layout">
+    
+    <aside class="shop-sidebar">
+        <div class="category-list">
+            <h3>Our Collections</h3>
+            <ul>
+                <li><a href="#">The Bamboo Heritage <span>(3)</span></a></li>
+                <li><a href="#">Terracotta Earth <span>(2)</span></a></li>
+                <li><a href="#">Organic Pantry <span>(4)</span></a></li>
+                <li><a href="#">Warli Canvases <span>(2)</span></a></li>
+            </ul>
+        </div>
+        <div class="impact-box">
+            <h4 style="margin:0 0 10px; color:#ff9200; font-family:'Signika', sans-serif;">Your Impact</h4>
+            <p style="font-size: 14px; line-height: 1.6; color: #666; margin:0; font-family:'Roboto', sans-serif;">
+                100% of proceeds go directly to the village artisans and farmers of Kawalthe. Thank you for preserving our culture.
+            </p>
+        </div>
+    </aside>
+
+    <div class="shop-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+            <span style="color:#666; font-size:16px; font-family:'Roboto', sans-serif;">Hover over a collection to Meet the Maker</span>
+        </div>
+
+        <div class="collections-grid" id="collections-container">
+            </div>
+    </div>
+</div>
+
+<div class="collection-drawer-overlay" id="drawer-overlay">
+    <div class="collection-drawer" id="collection-drawer">
+        <span class="close-drawer" onclick="closeDrawer()">&times;</span>
+        <div class="drawer-header">
+            <h2 id="drawer-title">Collection Name</h2>
+            <p id="drawer-subtitle">Select items to add to your village hamper</p>
+        </div>
+        <div class="sub-products-list" id="sub-products-container">
+            </div>
+    </div>
+</div>
+
+<div class="cart-float" onclick="toggleCart()">
+    <i class="fas fa-shopping-basket"></i>
+    <div class="cart-count" id="float-cart-count">0</div>
+</div>
+
+<div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+        <h3 style="margin:0; font-family:'Signika', sans-serif;">Village Hamper</h3>
+        <span class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></span>
+    </div>
+    <div class="cart-items" id="cart-items">
+        <p style="text-align:center; margin-top:50px; color:#888;">Your hamper is empty.</p>
+    </div>
+    <div class="cart-footer">
+        <div class="total-price">
+            <span>Total:</span>
+            <span id="cart-total" style="color:#ff9200;">₹0</span>
+        </div>
+        <button class="btn-checkout" onclick="checkoutWhatsApp()">
+            <i class="fab fa-whatsapp"></i> Order via WhatsApp
+        </button>
+    </div>
+</div>
+
+<footer id="footer" style="background: #111; color: #777; padding: 40px 20px; text-align: center; border-top: 1px solid #222;">
+    <p>&copy; 2024 Kawalthe Stay - Agro Tourism. All Rights Reserved.</p>
+</footer>
+
+<script>
+    // 1. NESTED PRODUCT DATA (Master Collections -> Sub-Products)
+    const collections = [
+        {
+            id: 'c1',
+            title: "The Bamboo Heritage",
+            itemsCount: "3 Items",
+            coverImage: "https://www.hachikotourism.in/wp-content/uploads/2020/03/agritourism-pune-1-4.jpg",
+            artisanName: "Suresh & Team",
+            artisanImage: "images/slide4.jpg", // Replace with actual artisan photo
+            story: "Sourced from the deep forests of Raigad. Each piece takes up to 6 hours to weave, preserving a 200-year-old tribal technique.",
+            subProducts: [
+                { id: 101, name: "Bamboo Flask", price: 450, image: "https://www.hachikotourism.in/wp-content/uploads/2020/03/agritourism-pune-1-4.jpg" },
+                { id: 102, name: "Woven Serving Tray", price: 300, image: "https://www.hachikotourism.in/wp-content/uploads/2020/03/agritourism-pune-1-4.jpg" },
+                { id: 103, name: "Bamboo Table Lamp", price: 800, image: "https://www.hachikotourism.in/wp-content/uploads/2020/03/agritourism-pune-1-4.jpg" }
+            ]
+        },
+        {
+            id: 'c2',
+            title: "Terracotta Earth",
+            itemsCount: "2 Items",
+            coverImage: "https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20210828140907.jpg",
+            artisanName: "Parvati Tai",
+            artisanImage: "images/agro2.jpg", // Replace with actual artisan photo
+            story: "Molded from the pure riverbank clay of Kawalthe. Parvati spins the wheel with techniques passed down from her grandfather.",
+            subProducts: [
+                { id: 201, name: "Earthen Water Pot (Matka)", price: 250, image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20210828140907.jpg" },
+                { id: 202, name: "Decorative Diyas (Set of 4)", price: 150, image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/IMG20210828140907.jpg" }
+            ]
+        },
+        {
+            id: 'c3',
+            title: "The Organic Pantry",
+            itemsCount: "4 Items",
+            coverImage: "https://www.hachikotourism.in/wp-content/uploads/2021/12/15-e1640174361842.jpg",
+            artisanName: "Kawalthe Farmers",
+            artisanImage: "images/slide5.jpg", // Replace with actual artisan photo
+            story: "Grown without chemicals, harvested by hand. This collection brings the exact flavors of our farm straight to your urban kitchen.",
+            subProducts: [
+                { id: 301, name: "Pure Forest Honey", price: 450, image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/15-e1640174361842.jpg" },
+                { id: 302, name: "Grandma's Mango Pickle", price: 180, image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/15-e1640174361842.jpg" },
+                { id: 303, name: "Village Masala Mix", price: 120, image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/15-e1640174361842.jpg" },
+                { id: 304, name: "Indrayani Rice (1kg)", price: 100, image: "https://www.hachikotourism.in/wp-content/uploads/2021/12/15-e1640174361842.jpg" }
+            ]
+        }
+    ];
+
+    let cart = [];
+
+    // 2. RENDER MASTER FLIP CARDS
+    function displayCollections() {
+        const container = document.getElementById("collections-container");
+        container.innerHTML = collections.map(col => `
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="flip-hint"><i class="fas fa-sync-alt"></i> Hover</div>
+                        <img src="${col.coverImage}" alt="${col.title}">
+                        <div class="front-content">
+                            <h3>${col.title}</h3>
+                            <span>${col.itemsCount}</span>
+                        </div>
+                    </div>
+                    <div class="flip-card-back">
+                        <h4>Meet the Maker</h4>
+                        <img src="${col.artisanImage}" class="artisan-img" alt="${col.artisanName}">
+                        <h3>${col.artisanName}</h3>
+                        <p>"${col.story}"</p>
+                        <button class="view-collection-btn" onclick="openDrawer('${col.id}')">View Products</button>
+                    </div>
+                </div>
+            </div>
+        `).join("");
+    }
+
+    // 3. DRAWER & SUB-PRODUCT LOGIC
+    function openDrawer(collectionId) {
+        const col = collections.find(c => c.id === collectionId);
+        if(!col) return;
+
+        document.getElementById("drawer-title").innerText = col.title;
+        
+        const subContainer = document.getElementById("sub-products-container");
+        subContainer.innerHTML = col.subProducts.map(prod => `
+            <div class="sub-product-item">
+                <div class="sub-product-info">
+                    <img src="${prod.image}" class="sub-img" alt="${prod.name}">
+                    <div class="sub-details">
+                        <h4>${prod.name}</h4>
+                        <span class="price">₹${prod.price}</span>
+                    </div>
+                </div>
+                <button class="add-sub-btn" onclick="addToCart(${prod.id})" title="Add to Hamper">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        `).join("");
+
+        const overlay = document.getElementById("drawer-overlay");
+        overlay.style.display = "flex";
+        // Small delay to allow display:flex to apply before adding animation class
+        setTimeout(() => overlay.classList.add("drawer-open"), 10);
+    }
+
+    function closeDrawer() {
+        const overlay = document.getElementById("drawer-overlay");
+        overlay.classList.remove("drawer-open");
+        setTimeout(() => overlay.style.display = "none", 400); // Wait for transition
+    }
+
+    // 4. CART LOGIC
+    function addToCart(productId) {
+        // Find product across all collections
+        let itemToAdd = null;
+        for(let col of collections) {
+            const found = col.subProducts.find(p => p.id === productId);
+            if(found) { itemToAdd = found; break; }
+        }
+
+        if(itemToAdd) {
+            cart.push(itemToAdd);
+            updateCartUI();
+            
+            // Visual feedback - bump the cart icon
+            const cartIcon = document.querySelector('.cart-float');
+            cartIcon.style.transform = 'scale(1.3)';
+            setTimeout(() => cartIcon.style.transform = 'scale(1)', 200);
+        }
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        document.getElementById("float-cart-count").innerText = cart.length;
+        const cartItemsContainer = document.getElementById("cart-items");
+        const totalContainer = document.getElementById("cart-total");
+        
+        if(cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p style="text-align:center; margin-top:50px; color:#888;">Your hamper is empty.</p>';
+            totalContainer.innerText = "₹0";
+            return;
+        }
+
+        let total = 0;
+        cartItemsContainer.innerHTML = cart.map((item, index) => {
+            total += item.price;
+            return `
+                <div class="cart-item">
+                    <div>
+                        <h4 style="margin:0; font-size:16px; color:#333;">${item.name}</h4>
+                        <span style="color:#888; font-size:14px;">₹${item.price}</span>
+                    </div>
+                    <i class="fas fa-trash remove-item" onclick="removeFromCart(${index})"></i>
+                </div>
+            `;
+        }).join("");
+        
+        totalContainer.innerText = "₹" + total;
+    }
+
+    function toggleCart() {
+        document.getElementById("cart-sidebar").classList.toggle("active");
+    }
+
+    // 5. CHECKOUT VIA WHATSAPP
+    function checkoutWhatsApp() {
+        if(cart.length === 0) {
+            alert("Your hamper is empty!");
+            return;
+        }
+
+        let message = "*Hello Kawalthe Stay!* 🌿%0aI would like to order a Village Hamper with the following authentic products:%0a%0a";
+        let total = 0;
+        
+        cart.forEach((item, index) => {
+            message += `${index + 1}. ${item.name} - ₹${item.price}%0a`;
+            total += item.price;
+        });
+
+        message += `%0a*Total Hamper Value: ₹${total}*%0a%0aPlease let me know how to proceed with payment and delivery.`;
+        
+        window.open(`https://wa.me/919970515438?text=${message}`, '_blank');
+    }
+
+    // Initialize Page
+    displayCollections();
+
+</script>
+
+</body>
+</html>

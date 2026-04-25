@@ -1,0 +1,290 @@
+/* =========================================
+   1. FONT DEFINITIONS
+   ========================================= */
+
+/* Roboto Slab - Regular */
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/robotoslab/v36/BngMUXZYTXPIvIBgJJSb6ufN5qU.woff2) format('woff2');
+}
+
+/* Roboto Slab - Bold */
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://fonts.gstatic.com/s/robotoslab/v36/BngMUXZYTXPIvIBgJJSb6ufA5qW54A.woff2) format('woff2');
+}
+
+/* =========================================
+   2. GLOBAL RESETS & BASICS
+   ========================================= */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Hide the preloader from the original theme */
+body #load {
+    display: none !important;
+}
+
+/* =========================================
+   3. HERO SLIDER STYLES
+   ========================================= */
+#main-slideshow {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden;
+    background: #000;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Dark Overlay */
+.slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.35); /* Adjust opacity for text contrast */
+}
+
+/* Slide Content Container */
+.slide-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    max-width: 900px;
+    animation: slideUp 1s ease-out;
+}
+
+/* Slide Typography */
+.slide-content h2 {
+    font-family: 'Signika', sans-serif;
+    font-size: 70px; /* Large, bold font like the original */
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    line-height: 1.1;
+}
+
+.slide-content p {
+    font-family: 'Roboto Slab', serif;
+    font-size: 24px;
+    margin-bottom: 40px;
+    color: #f0f0f0;
+    font-weight: 400;
+}
+
+/* Slider Button (Call to Action) */
+.slider-btn {
+    display: inline-block;
+    padding: 15px 35px;
+    background-color: #ff9200; /* Theme Orange */
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.slider-btn:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+/* Navigation Arrows */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 20px;
+    margin-top: -30px;
+    color: white;
+    font-weight: bold;
+    font-size: 40px;
+    transition: 0.3s ease;
+    user-select: none;
+    z-index: 10;
+    background: none;
+    border: none;
+    opacity: 0.7;
+}
+
+.next { right: 20px; }
+.prev { left: 20px; }
+
+.prev:hover, .next:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Slide Animation Keyframes */
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* =========================================
+   4. SECTION STYLES (Layout Fixes)
+   ========================================= */
+
+/* About Section Spacing */
+.vc_custom_1584203470235 {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+}
+
+/* Image Grid for "About Us" */
+.gallery-image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.gallery-image-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+/* Stats Section (Years Experience, etc) */
+.stats-container {
+    display: flex;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.stat-box h3 {
+    font-family: 'Roboto Slab', serif;
+    font-size: 50px;
+    font-weight: 700;
+    margin: 0;
+    color: #ff9200;
+}
+
+.stat-box p {
+    margin: 5px 0 0;
+    font-weight: 600;
+    color: #ccc;
+}
+
+/* =========================================
+   5. RESPONSIVE STYLES (Mobile)
+   ========================================= */
+@media screen and (max-width: 768px) {
+    /* Slider Text Size Adjustment */
+    .slide-content h2 { font-size: 36px; }
+    .slide-content p { font-size: 18px; margin-bottom: 25px; }
+    .slider-btn { padding: 12px 25px; font-size: 14px; }
+    
+    /* Hide Complex Header on Mobile */
+    .masthead .header-bar { 
+        padding: 10px 20px;
+    }
+    
+    .navigation { display: none !important; } /* Simplify nav for mobile */
+    
+    /* Adjust Arrows */
+    .prev, .next { padding: 10px; font-size: 30px; }
+    
+    /* Stack Grid Images */
+    .gallery-image-grid { grid-template-columns: 1fr; }
+}
+/* --- INSTAGRAM FEED SECTION --- */
+.insta-section {
+    padding: 80px 20px; text-align: center; background: #fff;
+}
+.insta-title {
+    font-family: 'Signika', sans-serif; font-size: 32px; margin-bottom: 10px; color: #333;
+}
+.insta-handle {
+    font-family: 'Roboto', sans-serif; color: #ff9200; font-weight: bold; font-size: 18px; 
+    text-decoration: none; display: inline-block; margin-bottom: 40px;
+}
+.insta-handle:hover { text-decoration: underline; }
+
+.insta-grid {
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Auto-responsive */
+    gap: 10px; 
+    max-width: 1200px; 
+    margin: 0 auto;
+}
+
+.insta-item {
+    position: relative; 
+    height: 250px; /* Forces square-ish look */
+    overflow: hidden; 
+    cursor: pointer;
+}
+
+.insta-item img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: transform 0.5s ease;
+}
+
+/* Hover Effect - Dark Overlay with Icon */
+.insta-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s ease;
+}
+
+.insta-overlay i {
+    color: white; font-size: 40px;
+}
+
+.insta-item:hover img { transform: scale(1.1); }
+.insta-item:hover .insta-overlay { opacity: 1; }
+
+.follow-btn {
+    margin-top: 40px;
+    background: #E1306C; /* Instagram Color */
+    color: white; padding: 12px 30px; border-radius: 30px;
+    text-decoration: none; font-weight: bold; display: inline-block;
+    transition: 0.3s;
+}
+.follow-btn:hover { background: #c1275c; box-shadow: 0 5px 15px rgba(225, 48, 108, 0.4); }
